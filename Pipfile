@@ -1,0 +1,33 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+django-environ = "*"
+drf-yasg = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+sentry-sdk = "*"
+django-split-settings = "*"
+whitenoise = "*"
+django-picklefield = "*"
+django-constance = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-django = "*"
+mixer = "*"
+django-debug-toolbar = "*"
+flake8 = "*"
+flake8-absolute-import = "*"
+flake8-bugbear = "*"
+flake8-django = "*"
+flake8-commas = "*"
+flake8-eradicate = "*"
+flake8-variables-names = "*"
+
+[requires]
+python_version = "3.9"
