@@ -12,8 +12,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
-    'constance',
-    'constance.backends.database',
 ]
 
 if settings.DEBUG:

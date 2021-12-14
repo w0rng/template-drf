@@ -12,7 +12,6 @@ include(
     'installed_apps.py',
     'locale.py',
     'middleware.py',
-    'constance.py',
     'drf.py',
     'sentry.py',
     'static.py',
