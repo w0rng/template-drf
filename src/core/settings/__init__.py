@@ -17,4 +17,5 @@ include(
     'static.py',
     'media.py',
     'templates.py',
+    'auth.py',
 )
