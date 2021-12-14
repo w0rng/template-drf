@@ -2,7 +2,7 @@ version: "3.8"
 services:
   db:
     container_name: database
-    image: postgres:13.4-alpine
+    image: postgres:14.1-alpine
     restart: always
     env_file: .env
     volumes:
@@ -24,4 +24,5 @@ services:
       - db
     ports:
       - 8000:8000
-    command: gunicorn --bind 0.0.0.0:8000 --timeout 600 --log-level debug --reload --workers 4 core.wsgi:application
+    command: gunicorn --bind 0.0.0.0:8000 --timeout 600 --log-level debug --reload
+      --workers 4 core.wsgi:application
