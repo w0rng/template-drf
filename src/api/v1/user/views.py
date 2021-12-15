@@ -6,7 +6,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
-from helpers.serializers import ErrorResponseSerializer
+from api.v1 import user
+from helpers.serializers import ErrorResponseSerializer, EmptySerializer
 from helpers.viewsets import RUDExtendedModelViewSet
 
 from api.v1.user import serializers
@@ -24,6 +25,7 @@ class UserViewSet(RUDExtendedModelViewSet):
         'change_password': serializers.UserChangePasswordSerializer,
         'compact': serializers.UserCompactSerializer,
         'login': serializers.AuthUserSerializer,
+        'refresh_token': EmptySerializer,
     }
     permission_map = {
         'login': permissions.AllowAny,
@@ -62,5 +64,13 @@ class UserViewSet(RUDExtendedModelViewSet):
 
         user = authenticate(request, **serializer.data)
         token, _ = Token.objects.get_or_create(user=user)
+
+        return Response(serializers.UserTokenSerializer(token).data)
+
+    @swagger_auto_schema(responses={200: serializers.UserTokenSerializer})
+    @action(methods=['post'], detail=False)
+    def refresh_token(self, request):
+        Token.objects.filter(user=request.user).delete()
+        token = Token.objects.create(user=request.user)
 
         return Response(serializers.UserTokenSerializer(token).data)
