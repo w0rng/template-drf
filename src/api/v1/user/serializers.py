@@ -1,3 +1,4 @@
+from rest_framework.authtoken.models import Token
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -15,7 +16,18 @@ class UserCompactSerializer(serializers.ModelSerializer):
 class UserReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name','last_name', 'email', 'username')
+        fields = ('id', 'first_name', 'last_name', 'email', 'username')
+
+
+class AuthUserSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+
+
+class UserTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Token
+        fields = ('key', 'created')
 
 
 class UserChangePasswordSerializer(serializers.Serializer):

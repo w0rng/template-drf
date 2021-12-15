@@ -1,7 +1,8 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions, status
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
@@ -22,6 +23,7 @@ class UserViewSet(RUDExtendedModelViewSet):
         'me': serializers.UserReadSerializer,
         'change_password': serializers.UserChangePasswordSerializer,
         'compact': serializers.UserCompactSerializer,
+        'login': serializers.AuthUserSerializer,
     }
     permission_map = {
         'login': permissions.AllowAny,
@@ -51,3 +53,14 @@ class UserViewSet(RUDExtendedModelViewSet):
         user = serializer.save()
         data = serializers.UserReadSerializer(instance=user).data
         return Response(data)
+
+    @swagger_auto_schema(responses={200: serializers.UserTokenSerializer})
+    @action(methods=['post'], detail=False)
+    def login(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = authenticate(request, **serializer.data)
+        token, _ = Token.objects.get_or_create(user=user)
+
+        return Response(serializers.UserTokenSerializer(token).data)
