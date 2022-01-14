@@ -1,5 +1,6 @@
 from split_settings.tools import include
 from core.settings.environ import env
+import django_heroku
 
 
 SECRET_KEY = env.str('SECRET_KEY')
@@ -19,3 +20,6 @@ include(
     'templates.py',
     'auth.py',
 )
+
+
+django_heroku.settings(locals())
